@@ -1,77 +1,47 @@
-## Loc2Country
+# Loc2Country
+
+> Note: This is a fork of the original <https://github.com/soorajb/loc2country> project, which is quite old and
+  doesn't follow current Go conventions. I just wanted it to work, so I forked it and rearranged some things to look
+  more like something that was made today.
+
+## Original Description
 
 Location coordinates (lat/lon) to ISO alpha-3 country code. Responds in microseconds.
 
-## Manual
+## Install and Run
 
-Input format: latitude, longitude
+Clone the repo, then `go run . --port 3333`
 
-Output format: 3-letter-ISO-country-code, time-taken-to-respond-in-nanos
+This starts a Telnet server, which accepts a lat and lon separated by a command, and returns the 3-letter
+country code and returns the country code and, optionally, the lookup time in nanoseconds.
 
-## HowTo
+You could connect using `telnet 127.0.0.1 3333` or you could pipe a latitude and longitude to the server like this:
 
-1. Run start.sh
-2. This will start a TCP server (localhost:3333) by default.
-3. Connect to the server by using telnet. (eg: "telnet localhost 3333")
-4. Input lat and lon seperated by comma, returns 3 letter country code and time taken to respond in nanoseconds.
-
-## Compiling
-
-To compile, run:
-
-``` bash
-go build src/server.go
+```bash
+echo 30.4323916666667,-84.2974611111111 | nc -N 127.0.0.1 3333
 ```
 
-To compile for a Linux machine from Mac, run (with correct architecture):
+## Command-Line Options
 
-``` bash
-env GOOS=linux GOARCH=amd64 go build src/server.go
+```bash
+--host      Hostname to bind to. eg: 192.168.1.10, default: localhost
+--port      Port eg: 8080, default: 3333
+--dataPath  Path to data file. eg: ./data/file.gz, default: ./data/master.csv.gz
+--time      Show the work time in nanoseconds, default: false
 ```
 
-## Testing
+## Original Description of the Data
 
-To test, run:
-
-```
-go test
-```
+The world boundaries were generated using QGIS, converted to a set of ~350 million geohashes at
+precision level 6 and then reduced (compressed) to a set of ~5 million geohashes using
+[georaptor](https://github.com/ashwin711/georaptor). 
 
 
-## Example
+## Original Contributors
 
-Starting the server:
-
-``` bash
-$ sh start.sh 
-2016/08/18 23:30:07 Creating server with address localhost:3333
-2016/08/18 23:30:07 Loading data..
-2016/08/18 23:30:13 Loading complete.
-2016/08/18 23:30:13 Total Entries: 5235316
-2016/08/18 23:30:13 Boot time: 5 seconds
-```
-
-``` bash
-$ telnet 127.0.0.1 3333
-Trying 127.0.0.1...
-Connected to localhost.
-Escape character is '^]'.
-12,77
-IND,17176
-```
-
-## Data
-
-The world boundaries were generated using QGIS, converted to a set of ~350 million geohashes at precision level 6 and then reduced (compressed) to a set of ~5 million geohashes using [georaptor](https://github.com/ashwin711/georaptor). 
-
-
-## Contributors
-
-Sooraj B - [@soorajb](http://github.com/soorajb)
-
-Ashwin Nair - [@ashwin711](http://github.com/ashwin711)
-
-Harikrishnan Shaji - [@har777](http://github.com/har777)
+* Sooraj B - [@soorajb](http://github.com/soorajb)
+* Ashwin Nair - [@ashwin711](http://github.com/ashwin711)
+* Harikrishnan Shaji - [@har777](http://github.com/har777)
 
 ## License
 
